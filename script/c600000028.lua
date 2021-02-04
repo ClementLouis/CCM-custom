@@ -3,6 +3,15 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
 	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0xfc),2,nil,s.matcheck)
+	--atkup
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetValue(s.atkval)
+	c:RegisterEffect(e1)
+	
 	--immune spell
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
@@ -27,7 +36,12 @@ s.listed_series={0xfc}
 function s.efilter(e,te)
 	return te:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
-
+function s.atkfilter(c)
+	return c:IsSetCard(0xfc) and c:IsType(TYPE_MONSTER)
+end
+function s.atkval(e,c)
+	return Duel.GetMatchingGroup(s.atkfilter,e:GetHandlerPlayer(),LOCATION_GRAVE,0,nil):GetClassCount(Card.GetCode)*200
+end
 function s.copycost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():GetFlagEffect(41209827)==0 end
 	e:GetHandler():RegisterFlagEffect(41209827,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
