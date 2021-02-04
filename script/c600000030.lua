@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	e3:SetCode(EVENT_FREE_CHAIN)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCountLimit(1)
-	e3:SetCondition(s.spcon)
+	-- e3:SetCondition(s.spcon)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
@@ -47,7 +47,7 @@ function s.initial_effect(c)
 	e4:SetTarget(s.postg)
 	e4:SetOperation(s.posop)
 	c:RegisterEffect(e4)
-	local e4=e5:Clone()
+	local e5=e4:Clone()
 	e5:SetDescription(aux.Stringid(id,1))
 	e5:SetTarget(s.postg2)
 	e5:SetOperation(s.posop2)
@@ -57,6 +57,9 @@ s.listed_series={0x10b}
 s.listed_names={75119040}
 function s.matcheck(g,lc,sumtype,tp)
 	return g:IsExists(Card.IsSetCard,1,nil,0x10b,lc,sumtype,tp)
+end
+function s.znval(e)
+	return ~(e:GetHandler():GetLinkedZone()&0x60)
 end
 function s.cfilter(c)
 	return c:IsSetCard(0x10b) and c:IsType(TYPE_MONSTER)
@@ -72,7 +75,6 @@ end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp) end
-	Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_GRAVE)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
