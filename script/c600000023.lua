@@ -27,14 +27,14 @@ s.listed_series={0xf3}
 s.listed_names={511004422}
 
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0
 		and Duel.IsPlayerCanSpecialSummonMonster(tp,511004422,0x10f3,TYPES_TOKEN,0,0,1,RACE_PLANT,ATTRIBUTE_DARK) end
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	local ct=Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)
+	local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)
 	if ft>ct then ft=ct end
 	if ft<=0 then return end
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
